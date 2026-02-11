@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Private Hoard</title>
+    <style>
+        body { margin: 0; display: flex; height: 100vh; background: #1a1a1a; color: white; font-family: sans-serif; }
+        #sidebar { width: 250px; background: #2a2a2a; padding: 20px; overflow-y: auto; border-right: 1px solid #444; }
+        #game-container { flex-grow: 1; position: relative; }
+        .game-item { padding: 10px; cursor: pointer; border-radius: 5px; margin-bottom: 5px; transition: 0.2s; }
+        .game-item:hover { background: #444; }
+        .active { background: #007bff !important; }
+        h3 { margin-top: 0; border-bottom: 1px solid #444; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div id="sidebar">
+    <h3>My Collection</h3>
+    <div id="game-list">
+        <div class="game-item" onclick="loadGame('genesis', 'Sonic the Hedgehog', 'https://archive.org/download/roms-for-the-site/Sonic%20The%20Hedgehog%20%28USA%2C%20Europe%29.md', this)">Sonic the Hedgehog</div>
+        <div class="game-item" onclick="loadGame('gba', 'Pokemon Emerald', 'https://your-link.com/pkmn.gba', this)">Pokemon Emerald</div>
+        <div class="game-item" onclick="loadGame('nes', 'Zelda', 'https://your-link.com/zelda.nes', this)">The Legend of Zelda</div>
+        </div>
+</div>
+
+<div id="game-container">
+    <div id="game" style="width:100%; height:100%;"></div>
+</div>
+
+<script>
+    function loadGame(core, name, url, element) {
+        // Clear previous emulator instance
+        document.getElementById('game').innerHTML = '';
+        
+        // Highlight active game in sidebar
+        document.querySelectorAll('.game-item').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+
+        // EmulatorJS Config
+        window.EJS_player = '#game';
+        window.EJS_core = core;
+        window.EJS_gameName = name;
+        window.EJS_gameUrl = url;
+        window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+        
+        // Load the emulator script
+        let script = document.createElement('script');
+        script.src = "https://cdn.emulatorjs.org/stable/data/loader.js";
+        document.getElementById('game').appendChild(script);
+    }
+</script>
+
+</body>
+</html>
